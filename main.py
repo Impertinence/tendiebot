@@ -1,5 +1,9 @@
-import stock_interactions
+from finance import market_interactions
+import time
+import pymongo
 
-x = stock_interactions.StockInteractor()
+start_time = time.time()
+market_interactions = market_interactions.Main()
 
-print(x.get_stock("tsla", "yahoo"))
+print(market_interactions.get_stock("tsla", "yahoo"))
+print("time: " + (time.time() - start_time) + " seconds")
