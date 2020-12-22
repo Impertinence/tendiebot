@@ -1,12 +1,15 @@
 #Written by Pranav Hegde
-import pymongo
+import robin_stocks
 
-from finance import market_interactions
-from storage import db_interactions
+from finance import interactions
+from finance import analyses
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+#from storage import db_interactions
 
 #Interactions
-robinhood = market_interactions.RobinHoodInteractions("pranavhegde11@gmail.com", "ae0iuwRmna1851",)
+robinhood = interactions.RobinHoodInteractions("pranavhegde11@gmail.com", "ae0iuwRmna1851")
+market_analyses = analyses.Analyze()
+#db = db_interactions.StockDB()
 
-print(robinhood)
+# print(robinhood.get_historicals(["tsla", "5minute", "week", "regular"])[0])
+print(robinhood.get_current_price(["tsla"]))
