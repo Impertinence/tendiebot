@@ -19,16 +19,13 @@ class StockInteractor():
             #Stock information
             current_price = float(soup.find("span", {"data-reactid": "50"}).string)
             open_price = float(soup.find("span", {"data-reactid", "98"}).string)
-            year_range = float(soup.find("td", {"data-test", "FIFTY_TWO_WK_RANGE-value"}))
+            #year_range = float(soup.find("td", {"data-test", "FIFTY_TWO_WK_RANGE-value"}))
             
             print(year_range)
             
         return [
             current_price,
-            open_price,
-            year_range,
-            week_range,
-
+            open_price
         ]
 
     def get_stock_historical(ticker, source):
