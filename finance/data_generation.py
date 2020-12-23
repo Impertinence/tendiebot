@@ -15,7 +15,7 @@ robinhood_interactions = financial_interactions.RobinHoodInteractions("pranavheg
 #Utility function to parse data
 def parse_historical_data(tickers, historical_data):
     for row in historical_data:
-        print(row)
+        print(row.symbol)
 
 
 class GenerateData():
