@@ -9,3 +9,5 @@ generate_data.PopulateCollections("stock", [
     "month",
     "regular"
 ])
+
+#Populate Analyses Table

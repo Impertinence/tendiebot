@@ -3,7 +3,7 @@ import robin_stocks
 import sys
 import uuid
 
-from . import financial_interactions
+from . import financial_interactions, analyses
 
 mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
 
@@ -27,3 +27,6 @@ class GenerateData():
             collection.insert_one(row)
         
         print("Finished writing to database!")
+
+    def PopulateAnalyses(self, ticker)
+        
