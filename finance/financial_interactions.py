@@ -21,7 +21,7 @@ class RobinHoodInteractions():
 
 		self.rh_account_info = robin_stocks.authentication.login(username=username, password=password, expiresIn=86400, scope="internal", by_sms=True, store_session=True, mfa_code=None)
 	
-	def get_historicals(self, params):
+	def get_stock_historicals(self, params):
 		return robin_stocks.get_stock_historicals(params[0], params[1], params[2], params[3])
 
 	def get_current_price(self, tickers):
