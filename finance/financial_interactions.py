@@ -3,7 +3,6 @@
 import requests
 import pymongo
 import robin_stocks
-import bs4
 
 from bson.json_util import dumps
 
