@@ -25,3 +25,6 @@ class RobinHoodInteractions():
 
 	def get_current_price(self, tickers):
 		return robin_stocks.stocks.get_quotes(tickers)
+
+	def get_crypto_historicals(self, params):
+		return robin_stocks.get_crypto_historicals(params[0], params[1], params[2], params[3])
