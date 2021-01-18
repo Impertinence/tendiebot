@@ -8,7 +8,8 @@ generate_data = data_generation.GenerateData()
 hourly_data = []
 daily_data = []
 
-def RetrieveHourlyCrypto():
+def RetrieveHourlyCrypto(ticker):
+    threading.Timer(15.0, RetrieveHourlyCrypto, [ticker]).start()
     hourly_data = generate_data.PopulateCryptoHistorical([
         "eth",
         "15second",
@@ -16,11 +17,11 @@ def RetrieveHourlyCrypto():
         "24_7"
     ])
 
-    recent_datapoint = hourly_data[-1]
     new_analyse = analyses.GenerateAnalyses(hourly_data).MACD()
 
 
-def RetrieveDailyCrypto():
+def RetrieveDailyCrypto(ticker):
+    threading.Timer(300.0, RetrieveDailyCrypto, [ticker]).start()
     eth_daily_data = generate_data.PopulateCryptoHistorical([
         "eth",
         "5minute",
@@ -29,8 +30,7 @@ def RetrieveDailyCrypto():
     ])
 
 def run(ticker):
-    threading.Timer(15.0, RetrieveHourlyCrypto).start()
-    threading.Timer(300.0, RetrieveDailyCrypto).start()
-
+    RetrieveHourlyCrypto("eth")
+    RetrieveDailyCrypto("eth")
 #Init Ethereum retrieval
 run("eth")
