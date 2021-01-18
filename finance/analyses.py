@@ -1,8 +1,12 @@
 
+#Basic financial functions
+def EMA(dataset, periods):
+    print(dataset[-1]['open_price'])
 
-class GenerateAnalyse():
+class GenerateAnalyses():
     def __init__(self, dataset):
         self.dataset = dataset
 
     def MACD(self):
-        print(self.dataset)
+        dataset = self.dataset
+        ema = EMA(dataset, 12)
