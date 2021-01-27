@@ -20,7 +20,7 @@ def SMA(dataset, periods):
     
     return total_value/periods
 
-def EMA(dataset, periods):
+def EMA(dataset, previous_ma, periods):
     chunk_size = len(dataset)/periods
 
     initial_ema = SMA(dataset, periods)

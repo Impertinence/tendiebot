@@ -1,8 +1,8 @@
 import threading, time
 
-from finance import data_generation, analyses
+from finance import data_generation, analyses, financial_interactions
 
-generate_data = data_generation.GenerateData()
+generate_data = robinhood_interactions.RobinHoodInteractions("pranavhegde11@gmail.com", "ae0iuwRmna1851")
 
 #global vars
 hourly_data = []
@@ -17,8 +17,7 @@ def RetrieveHourlyCrypto(ticker):
         "24_7"
     ])
 
-    new_analyse = analyses.GenerateAnalyses(hourly_data).MACD()
-
+    macd = analyses.GenerateAnalyses(hourly_data).MACD()
 
 def RetrieveDailyCrypto(ticker):
     threading.Timer(300.0, RetrieveDailyCrypto, [ticker]).start()
@@ -29,8 +28,9 @@ def RetrieveDailyCrypto(ticker):
         "24_7"
     ])
 
-def run(ticker):
+def run():
     RetrieveHourlyCrypto("eth")
     RetrieveDailyCrypto("eth")
+
 #Init Ethereum retrieval
-run("eth")
+run()
