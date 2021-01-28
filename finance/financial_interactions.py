@@ -6,11 +6,6 @@ import robin_stocks
 
 from bson.json_util import dumps
 
-# mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
-
-# miscellaneous = mongo_client["miscellaneous"]
-# robinhood_credentials = miscellaneous["rh_creds"]
-
 class RobinHoodInteractions():
 	def __init__(self, username, password):
 		# rh_credentials = list(robinhood_credentials.find())

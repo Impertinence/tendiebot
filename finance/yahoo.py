@@ -8,13 +8,6 @@ class YahooInteractions():
     def __init__(self):
         self.test = "2"
 
-    def get_quote(self, ticker):
-        r = requests.get("https://finance.yahoo.com/quote/" + ticker)
-        #data-reactid=42
-        soup = BeautifulSoup(r.text, 'html.parser')
-
-        print(soup)
-
     def get_day_gainers(self):
         r = requests.get("https://finance.yahoo.com/screener/predefined/day_gainers")
 
