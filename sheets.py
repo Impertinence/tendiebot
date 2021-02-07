@@ -33,5 +33,11 @@ class SHEETS():
         self.SPREADSHEET_NAME = spreadsheet_name
 
     def getSheetsContent(self):
-        result = sheets.get(spreadsheetId=self.SPREADSHEET_ID).execute()
-        print(result)
+        results = sheets.values().get(spreadsheetId=self.SPREADSHEET_ID, range="Sheet1!A:A").execute()
+        ticker_list = []
+
+        for val in results['values']:
+            if val[0] != "Tickers":
+                ticker_list.append(val[0])
+                
+        return ticker_list

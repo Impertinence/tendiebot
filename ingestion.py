@@ -2,12 +2,12 @@ import pymongo
 import threading
 import time
 import json
+import sheets
 
 from datetime import time as d_time
 from datetime import datetime
 
 from finance import market_interactions, analyses, financial_interactions
-import sheets
 
 #Global Vars
 mc = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -32,9 +32,11 @@ sa.getSheetsContent()
 dgdb = mc['day_gainers']
 dldb = mc['day_losers']
 pdb = mc['positions']
+sidb = mc['stock_info']
 
 #Global Collections
 interested_positions = pdb['interested']
+invested_positions = pdb['invested']
 
 day_gainers = yh.get_day_gainers()
 day_losers = yh.get_day_losers()
@@ -93,6 +95,7 @@ def populateDayLosers():
 def DailyTasks():
     now = datetime.now().time()
 
+    #Populate the daily movers collections
     if now == am_opening:
         populateDayLosers()
         populateDayGainers()

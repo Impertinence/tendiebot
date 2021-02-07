@@ -37,7 +37,13 @@ class FINNHUB():
         self.sandbox_key = "sandbox_c0dene748v6sgrj2gf50"
         self.api_key = "c0dene748v6sgrj2gf4g"
 
+    #Realtime price quote
     def realtime_quote(self, ticker):
         r = requests.get('https://www.finnhub.io/api/v1/quote?symbol=' + ticker.upper() + '&token=' + self.api_key)
+        return r.json()
+
+    #Financial Headlines
+    def company_news(self, ticker, starting, ending):
+        r = requests.get('https://www.finnhub.io/api/v1/company-news?symbol=' + ticker.upper() + "&from=" + starting + "&to=" + ending)
         return r.json()
 
