@@ -1,4 +1,3 @@
-
 #Basic financial functions
 def SMA(dataset, periods):
     chunk_size = int(len(dataset)/periods)
@@ -13,7 +12,7 @@ def SMA(dataset, periods):
         open_price = float(pricepoint['open_price'])
         close_price = float(pricepoint['close_price'])
         max_price_range = float(pricepoint['high_price']) - float(pricepoint['low_price'])
-        total_price_range = float(pricepoint['open_price']) - float(pricepoint['close_price'])
+        actual_price_range = float(pricepoint['open_price']) - float(pricepoint['close_price'])
 
         total_value+=close_price
         i+=chunk_size
@@ -23,7 +22,8 @@ def SMA(dataset, periods):
 def EMA(dataset, previous_ma, periods):
     chunk_size = len(dataset)/periods
 
-    initial_ema = SMA(dataset, periods)
+    initial_ma = SMA(dataset, periods)
+
 
 
 class GenerateAnalyses():

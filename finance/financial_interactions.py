@@ -6,7 +6,7 @@ import robin_stocks
 
 from bson.json_util import dumps
 
-class RobinHoodInteractions():
+class ROBINHOOD():
 	def __init__(self, username, password):
 		# rh_credentials = list(robinhood_credentials.find())
 		# if(len(rh_credentials) == 0):
@@ -23,3 +23,6 @@ class RobinHoodInteractions():
 
 	def get_crypto_historicals(self, params):
 		return robin_stocks.get_crypto_historicals(params[0], params[1], params[2], params[3])
+
+	def get_watchlists(self):
+		return robin_stocks.account.get_all_watchlists()
