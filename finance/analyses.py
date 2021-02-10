@@ -24,8 +24,6 @@ def EMA(dataset, previous_ma, periods):
 
     initial_ma = SMA(dataset, periods)
 
-
-
 class GenerateAnalyses():
     def __init__(self, dataset):
         self.dataset = dataset

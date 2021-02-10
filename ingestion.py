@@ -26,7 +26,6 @@ SPREADSHEET_ID = "1wnXwk3pjunqLTbZ-ImL0GfjbXBQXWGrOPm12Zw5A-ZI"
 SPREADSHEET_NAME = "stonks"
 
 sa = sheets.SHEETS(SPREADSHEET_ID, SPREADSHEET_NAME)
-sa.getSheetsContent()
 
 #DBs
 dgdb = mc['day_gainers']
@@ -43,6 +42,7 @@ day_losers = yh.get_day_losers()
 
 print("[INGESTING]")
 
+#Daily Gainers
 def populateDayGainers():
     tickers = [stock[0] for stock in day_gainers]
     print("\n")
@@ -67,6 +67,7 @@ def populateDayGainers():
         else:
             print('[DAY_GAINERS_ERR]: ' + ticker + " not available")
 
+#Daily losers
 def populateDayLosers():
     tickers = [stock[0] for stock in day_losers]
 
@@ -92,6 +93,33 @@ def populateDayLosers():
         else:
             print('[DAY_LOSERS_ERR]: ' + ticker + " not available")
 
+def ingestWatchlist():
+    watchlist = sa.getSheetsContent()
+
+    for ticker in watchlist:
+        price_info = fn.realtime_quote(ticker)
+        stock_collection = interested_positions[ticker]
+
+        if(datetime.now().time() >= am_opening):
+            m_hours = "a"
+        elif(datetime.now.time() >= om_opening):
+            m_hours = "r"
+        elif(datetime.now.time() >= pm_opening):
+            m_hours = "p"
+        
+        inserted_price_info = {
+            "time": str(datetime.now()),
+            "market": m_hours,
+            "c": price_info['c'],
+            "o": price_info['o'],
+            "l": price_info['l'],
+            "h": price_info['h']
+        }
+        stock_collection.insert_one(inserted_price_info)
+
+    time.sleep(60)
+
+#Run all daily tasks
 def DailyTasks():
     now = datetime.now().time()
 
@@ -100,5 +128,9 @@ def DailyTasks():
         populateDayLosers()
         populateDayGainers()
 
+def ConstantTasks():
+    ingestWatchlist()
+
 while True:
     DailyTasks()
+    ConstantTasks()
