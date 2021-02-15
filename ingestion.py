@@ -3,17 +3,29 @@ import threading
 import time
 import json
 import sheets
+import csv
 
 from datetime import time as d_time
 from datetime import datetime
 
-from finance import market_interactions, analyses, financial_interactions
+from finance import market_interactions, analyses
 
 #Global Vars
 mc = pymongo.MongoClient("mongodb://localhost:27017/")
 yh = market_interactions.YAHOO()
 fn = market_interactions.FINNHUB()
-fi = financial_interactions.ROBINHOOD("pranavhegde11@gmail.com", "ae0iuwRmna1851")
+oi = market_interactions.OPENINSIDER()
+mw = market_interactions.MARKETWATCH()
+fi = market_interactions.ROBINHOOD("pranavhegde11@gmail.com", "ae0iuwRmna1851")
+
+#Smallcap tickers
+smallcap = []
+with open('files/all_smallcap.csv', newline="") as smallcap_file:
+    tickers = csv.reader(smallcap_file, delimiter=',', quotechar='"')
+    for t in tickers:
+        all_ticks = t
+
+#Mediumcap tickers
 
 #Times
 pm_opening = d_time(9, 0, 0)
@@ -32,6 +44,10 @@ dgdb = mc['day_gainers']
 dldb = mc['day_losers']
 pdb = mc['positions']
 sidb = mc['stock_info']
+
+#Organization by Capital
+smallcap = mc['smallcap']
+mediumcap = mc['']
 
 #Global Collections
 interested_positions = pdb['interested']
@@ -93,6 +109,7 @@ def populateDayLosers():
         else:
             print('[DAY_LOSERS_ERR]: ' + ticker + " not available")
 
+#Ingest the watchlist
 def ingestWatchlist():
     watchlist = sa.getSheetsContent()
 
@@ -102,22 +119,27 @@ def ingestWatchlist():
 
         if(datetime.now().time() >= am_opening):
             m_hours = "a"
-        elif(datetime.now.time() >= om_opening):
+        elif(datetime.now().time() >= om_opening):
             m_hours = "r"
-        elif(datetime.now.time() >= pm_opening):
+        elif(datetime.now().time() >= pm_opening):
             m_hours = "p"
         
         inserted_price_info = {
             "time": str(datetime.now()),
             "market": m_hours,
-            "c": price_info['c'],
-            "o": price_info['o'],
-            "l": price_info['l'],
-            "h": price_info['h']
+            "close_price": price_info['c'],
+            "open_price": price_info['o'],
+            "low_price": price_info['l'],
+            "high_price": price_info['h']
         }
         stock_collection.insert_one(inserted_price_info)
 
     time.sleep(60)
+
+#Ingest smallcaps
+def ingestSmallCap():
+    for ticker in smallcap:
+        yh.get_historicals()
 
 #Run all daily tasks
 def DailyTasks():
@@ -131,6 +153,8 @@ def DailyTasks():
 def ConstantTasks():
     ingestWatchlist()
 
-while True:
-    DailyTasks()
-    ConstantTasks()
+
+# while True:
+#     DailyTasks()
+#     ConstantTasks()
+ingestSmallCap()

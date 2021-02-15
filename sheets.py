@@ -11,17 +11,17 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 creds = None
 if os.path.exists('sheets_token.json'):
-    creds = Credentials.from_authorized_user_file('sheets_token.json', SCOPES)
+    creds = Credentials.from_authorized_user_file('files/sheets_token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
 if not creds or not creds.valid:
     if creds and creds.expired and creds.refresh_token:
         creds.refresh(Request())
     else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            'credentials.json', SCOPES)
+            'files/credentials.json', SCOPES)
         creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
-    with open('sheets_token.json', 'w') as token:
+    with open('files/sheets_token.json', 'w') as token:
         token.write(creds.to_json())
 
 service = build("sheets", "v4", credentials=creds)
@@ -39,5 +39,5 @@ class SHEETS():
         for val in results['values']:
             if val[0] != "Tickers":
                 ticker_list.append(val[0])
-                
+
         return ticker_list
