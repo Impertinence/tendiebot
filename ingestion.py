@@ -23,7 +23,7 @@ smallcap = []
 with open('files/all_smallcap.csv', newline="") as smallcap_file:
     tickers = csv.reader(smallcap_file, delimiter=',', quotechar='"')
     for t in tickers:
-        all_ticks = t
+        smallcap = t
 
 #Mediumcap tickers
 
@@ -46,8 +46,8 @@ pdb = mc['positions']
 sidb = mc['stock_info']
 
 #Organization by Capital
-smallcap = mc['smallcap']
-mediumcap = mc['']
+smallcap_db = mc['smallcap']
+mediumcap_db = mc['mediumcap']
 
 #Global Collections
 interested_positions = pdb['interested']
@@ -132,14 +132,23 @@ def ingestWatchlist():
             "low_price": price_info['l'],
             "high_price": price_info['h']
         }
+
         stock_collection.insert_one(inserted_price_info)
 
     time.sleep(60)
 
 #Ingest smallcaps
 def ingestSmallCap():
-    for ticker in smallcap:
-        yh.get_historicals()
+    first_batch = smallcap[:2000]
+    second_batch = smallcap[2000:4000]
+    third_batch = smallcap[4000:4300]
+
+    #Ingest first batch of smallcap tickers
+    for ticker in first_batch:
+        stock_collection = smallcap_db[ticker]  
+
+    print("[INGESTED SMALLCAP]")
+    time.sleep(3600)
 
 #Run all daily tasks
 def DailyTasks():

@@ -8,6 +8,7 @@ from bson.json_util import dumps
 from bs4 import BeautifulSoup
 from itertools import groupby
 
+#Yahoo finance access
 class YAHOO():
     def __init__(self):
         self.test = "2"
@@ -51,7 +52,11 @@ class YAHOO():
             results.append(keys[(i-7):i])
             i+=7
 
-        return results
+        #Convert entries to dict (mongodb only enters dicts)
+        result_dict = []
+        for i in results:
+            print(i[])
+
 
 #Finnhub access
 class FINNHUB():
@@ -104,6 +109,7 @@ class ROBINHOOD():
 	def get_watchlists(self):
 		return robin_stocks.account.get_all_watchlists()
 
+#marketwatch access
 class MARKETWATCH():
     def __init__(self):
         self.uri = ""
