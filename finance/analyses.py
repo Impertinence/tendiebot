@@ -4,6 +4,7 @@ class Analyses():
     def __init__(self, dataset):
         self.dataset = dataset
 
+    #Stochastics
     def stochastics(self, low, high, close, k, d):
         df = self.dataset.copy()
 
