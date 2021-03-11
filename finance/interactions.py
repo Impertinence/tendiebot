@@ -55,7 +55,7 @@ class YAHOO():
         #Convert entries to dict (mongodb only enters dicts)
         result_dict = []
         for i in results:
-            print(i[])
+            print(i)
 
 
 #Finnhub access
@@ -71,7 +71,17 @@ class FINNHUB():
 
     #Financial Headlines
     def company_news(self, ticker, starting, ending):
-        r = requests.get('https://www.finnhub.io/api/v1/company-news?symbol=' + ticker.upper() + "&from=" + starting + "&to=" + ending)
+        r = requests.get('https://www.finnhub.io/api/v1/company-news?symbol=' + ticker.upper() + "&from=" + starting + "&to=" + ending + "&token=" + self.api_key)
+        return r.json()
+
+    #Support/resistance level
+    def support_resistance(self, ticker, res):
+        r = requests.get('https://www.finnhub.io/api/v1/scan/support-resistance?symbol=' + ticker.upper() + '&resolution=' + res + "&token=" + self.api_key)
+        return r.json()
+
+    # Pattern recognition
+    def pattern_recognition(self, ticker, res):
+        r = requests.get('https://www.finnhub.io/api/v1/scan/pattern?symbol=' + ticker.upper() + '&resolution=' + res + "&token=" + self.api_key)
         return r.json()
 
 #Openinsider access

@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd
 
 class Analyses():
     def __init__(self, dataset):
@@ -6,9 +6,10 @@ class Analyses():
 
     #Stochastics
     def stochastics(self, low, high, close, k, d):
-        df = self.dataset.copy()
+        df = pd.DataFrame(self.dataset)
 
-        #Set min low and max high of stoch
+
+        # Set min low and max high of stoch
         low_min = df[low].rolling(window=k).min()
         high_max = df[high].rolling(window=k).max()
 
@@ -20,4 +21,4 @@ class Analyses():
         df['k_slow'] = df["d_fast"]
         df['d_slow'] = df["k_slow"].rolling(window=d).mean()
 
-        return df
+        print(df)

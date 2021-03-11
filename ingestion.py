@@ -8,34 +8,35 @@ import csv
 from datetime import time as d_time
 from datetime import datetime
 
-from finance import market_interactions, analyses
+from finance import interactions, analyses
 
 #Global Vars
 mc = pymongo.MongoClient("mongodb://localhost:27017/")
-yh = market_interactions.YAHOO()
-fn = market_interactions.FINNHUB()
-oi = market_interactions.OPENINSIDER()
-mw = market_interactions.MARKETWATCH()
-fi = market_interactions.ROBINHOOD("pranavhegde11@gmail.com", "ae0iuwRmna1851")
 
-#Smallcap tickers
+yh = interactions.YAHOO()
+fn = interactions.FINNHUB()
+oi = interactions.OPENINSIDER()
+mw = interactions.MARKETWATCH()
+fi = interactions.ROBINHOOD("pranavhegde11@gmail.com", "ae0iuwRmna1851")
+
+#Small Cap tickers
 smallcap = []
 with open('files/all_smallcap.csv', newline="") as smallcap_file:
     tickers = csv.reader(smallcap_file, delimiter=',', quotechar='"')
     for t in tickers:
         smallcap = t
 
-#Mediumcap tickers
+#Medium Cap tickers
+
+#Custom tickers from google sheets
+SPREADSHEET_ID = "1wnXwk3pjunqLTbZ-ImL0GfjbXBQXWGrOPm12Zw5A-ZI"
+SPREADSHEET_NAME = "stonks"
 
 #Times
 pm_opening = d_time(9, 0, 0)
 om_opening = d_time(9, 30, 0)
 am_opening = d_time(4, 0, 0)
 am_closing = d_time(6, 0, 0)
-
-#Custom tickers from google sheets
-SPREADSHEET_ID = "1wnXwk3pjunqLTbZ-ImL0GfjbXBQXWGrOPm12Zw5A-ZI"
-SPREADSHEET_NAME = "stonks"
 
 sa = sheets.SHEETS(SPREADSHEET_ID, SPREADSHEET_NAME)
 
@@ -59,7 +60,7 @@ day_losers = yh.get_day_losers()
 print("[INGESTING]")
 
 #Daily Gainers
-def populateDayGainers():
+def day_winners():
     tickers = [stock[0] for stock in day_gainers]
     print("\n")
     print("[DAY_GAINERS]: " + str(datetime.datetime.now().date()))
@@ -84,7 +85,7 @@ def populateDayGainers():
             print('[DAY_GAINERS_ERR]: ' + ticker + " not available")
 
 #Daily losers
-def populateDayLosers():
+def day_losers():
     tickers = [stock[0] for stock in day_losers]
 
     print("\n")
@@ -110,7 +111,7 @@ def populateDayLosers():
             print('[DAY_LOSERS_ERR]: ' + ticker + " not available")
 
 #Ingest the watchlist
-def ingestWatchlist():
+def watchlist():
     watchlist = sa.getSheetsContent()
 
     for ticker in watchlist:
@@ -138,7 +139,7 @@ def ingestWatchlist():
     time.sleep(60)
 
 #Ingest smallcaps
-def ingestSmallCap():
+def get_smallcap():
     first_batch = smallcap[:2000]
     second_batch = smallcap[2000:4000]
     third_batch = smallcap[4000:4300]
@@ -147,23 +148,33 @@ def ingestSmallCap():
     for ticker in first_batch:
         stock_collection = smallcap_db[ticker]  
 
+    for ticker in second_batch:
+        stock_collection = smallcap_db[ticker]
+
+    for ticker in third_batch:
+        stock_collection = smallcap_db[ticker]
+
     print("[INGESTED SMALLCAP]")
     time.sleep(3600)
 
+#Populate crypto db
+def populate_crypto():
+    
+    time.sleep(60)
+
 #Run all daily tasks
-def DailyTasks():
+def daily_tasks():
     now = datetime.now().time()
 
     #Populate the daily movers collections
     if now == am_opening:
-        populateDayLosers()
-        populateDayGainers()
+        day_losers()
+        day_winners()
 
-def ConstantTasks():
-    ingestWatchlist()
+def constant_tasks():
+    while True:
+        populate_crypto()
 
-
-# while True:
-#     DailyTasks()
-#     ConstantTasks()
-ingestSmallCap()
+if __name__ == '__main__':
+    daily_tasks()
+    constant_tasks()
