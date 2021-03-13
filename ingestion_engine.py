@@ -57,7 +57,10 @@ invested_positions = pdb['invested']
 day_gainers = yh.get_day_gainers()
 day_losers = yh.get_day_losers()
 
-print("[INGESTING]")
+#start ingestion engine
+def start():
+	constant_tasks()
+	daily_tasks()
 
 #Daily Gainers
 def day_winners():
@@ -126,12 +129,12 @@ def watchlist():
             m_hours = "p"
         
         inserted_price_info = {
-            "time": str(datetime.now()),
-            "market": m_hours,
-            "close_price": price_info['c'],
-            "open_price": price_info['o'],
-            "low_price": price_info['l'],
-            "high_price": price_info['h']
+            "t": str(datetime.now()),
+            "m": m_hours,
+            "c": price_info['c'],
+            "o": price_info['o'],
+            "l": price_info['l'],
+            "h": price_info['h']
         }
 
         stock_collection.insert_one(inserted_price_info)
@@ -176,5 +179,4 @@ def constant_tasks():
         populate_crypto()
 
 if __name__ == '__main__':
-    daily_tasks()
-    constant_tasks()
+	start()
