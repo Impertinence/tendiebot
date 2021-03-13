@@ -1,0 +1,3 @@
+import ingestion
+
+ingestion.start()

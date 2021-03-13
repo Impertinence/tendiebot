@@ -57,11 +57,6 @@ invested_positions = pdb['invested']
 day_gainers = yh.get_day_gainers()
 day_losers = yh.get_day_losers()
 
-#start ingestion engine
-def start():
-	constant_tasks()
-	daily_tasks()
-
 #Daily Gainers
 def day_winners():
     tickers = [stock[0] for stock in day_gainers]
@@ -174,9 +169,15 @@ def daily_tasks():
         day_losers()
         day_winners()
 
+#Constant tasks
 def constant_tasks():
     while True:
         populate_crypto()
+
+#Start engine
+def start():
+    constant_tasks()
+    daily_tasks()
 
 if __name__ == '__main__':
 	start()
