@@ -157,7 +157,9 @@ def get_smallcap():
 
 #Populate crypto db
 def populate_crypto():
+    #Bitcoin
     
+
     time.sleep(60)
 
 #Run all daily tasks
