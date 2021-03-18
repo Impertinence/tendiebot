@@ -97,40 +97,40 @@ class OPENINSIDER():
         
         return [list(group) for k, group in groupby(keys, lambda x: x == "") if not k]
 
-#Robinhood access
-class ROBINHOOD():
-	def __init__(self, username, password):
-		# rh_credentials = list(robinhood_credentials.find())
-		# if(len(rh_credentials) == 0):
-		# 	if(robinhood_credentials.insert_one(self.rh_account_info) != True):
-		# 		print("error retrieving Robin Hood credentials...")
+# #Robinhood access
+# class ROBINHOOD():
+# 	def __init__(self, username, password):
+# 		# rh_credentials = list(robinhood_credentials.find())
+# 		# if(len(rh_credentials) == 0):
+# 		# 	if(robinhood_credentials.insert_one(self.rh_account_info) != True):
+# 		# 		print("error retrieving Robin Hood credentials...")
 
-		self.rh_account_info = robin_stocks.authentication.login(username=username, password=password, expiresIn=86400, scope="internal", by_sms=True, store_session=True, mfa_code=None)
+# 		self.rh_account_info = robin_stocks.authentication.login(username=username, password=password, expiresIn=86400, scope="internal", by_sms=True, store_session=True, mfa_code=None)
 	
-	def get_stock_historicals(self, params):
-		return robin_stocks.get_stock_historicals(params[0], params[1], params[2], params[3])
+# 	def get_stock_historicals(self, params):
+# 		return robin_stocks.get_stock_historicals(params[0], params[1], params[2], params[3])
 
-	def get_current_price(self, tickers):
-		return robin_stocks.stocks.get_quotes(tickers)
+# 	def get_current_price(self, tickers):
+# 		return robin_stocks.stocks.get_quotes(tickers)
 
-	def get_crypto_historicals(self, params):
-		return robin_stocks.get_crypto_historicals(params[0], params[1], params[2], params[3])
+# 	def get_crypto_historicals(self, params):
+# 		return robin_stocks.get_crypto_historicals(params[0], params[1], params[2], params[3])
 
-    def submit_buy_order(self, params):
-        equity_type = params[0]
+#     def submit_buy_order(self, params):
+#         equity_type = params[0]
 
-        if equity_type == "crypto":
-            order_receipt = robin_stocks.robinhood.orders.order_buy_crypto_by_price(params[1], params[2])
+#         if equity_type == "crypto":
+#             order_receipt = robin_stocks.robinhood.orders.order_buy_crypto_by_price(params[1], params[2])
 
-        return order_receipt
+#         return order_receipt
 
-    def submit_sell_order(self, params)
-        equity_type = params[0]
+#     def submit_sell_order(self, params)
+#         equity_type = params[0]
 
-        if equity_type == "crypto":
-            order_receipt = robin_stocks.robinhood.orders.order_sell_crypto_by_price(params[1], params[2])
+#         if equity_type == "crypto":
+#             order_receipt = robin_stocks.robinhood.orders.order_sell_crypto_by_price(params[1], params[2])
         
-        return order_receipt
+#         return order_receipt
 
 #marketwatch access
 class MARKETWATCH():
@@ -152,5 +152,9 @@ class MARKETWATCH():
 
 #Coinalyze access
 class COINALYZE():
-
     def get_quote(self, ticker):
+        r = requests.get("https://coinalyze.net/bitcoin/usd/coinbase/price-chart-live/")
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+        
+        current_btc_val = soup.find_all("div", {"class": "current-price"})

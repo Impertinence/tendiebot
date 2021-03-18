@@ -4,6 +4,7 @@ import time
 import json
 import sheets
 import csv
+import coinbasepro
 
 from datetime import time as d_time
 from datetime import datetime
@@ -18,6 +19,7 @@ fn = interactions.FINNHUB()
 oi = interactions.OPENINSIDER()
 mw = interactions.MARKETWATCH()
 fi = interactions.ROBINHOOD("pranavhegde11@gmail.com", "ae0iuwRmna1851")
+co = interactions.COINALYZE()
 
 #Small Cap tickers
 smallcap = []
@@ -158,7 +160,7 @@ def get_smallcap():
 #Populate crypto db
 def populate_crypto():
     #Bitcoin
-    
+    co.
 
     time.sleep(60)
 
