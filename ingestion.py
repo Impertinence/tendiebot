@@ -4,7 +4,8 @@ import time
 import json
 import sheets
 import csv
-import coinbasepro
+
+import coinbasepro as cbp
 
 from datetime import time as d_time
 from datetime import datetime
@@ -13,6 +14,8 @@ from finance import interactions, analyses
 
 #Global Vars
 mc = pymongo.MongoClient("mongodb://localhost:27017/")
+cb_public_client = cbp.public_client()
+cb_auth_cilent = cbp.auth_client()
 
 yh = interactions.YAHOO()
 fn = interactions.FINNHUB()
@@ -160,7 +163,6 @@ def get_smallcap():
 #Populate crypto db
 def populate_crypto():
     #Bitcoin
-    co.
 
     time.sleep(60)
 
