@@ -14,8 +14,7 @@ from finance import interactions, analyses
 
 #Global Vars
 mc = pymongo.MongoClient("mongodb://localhost:27017/")
-cb_public_client = cbp.public_client()
-cb_auth_cilent = cbp.auth_client()
+cb = cbp.PublicClient()
 
 yh = interactions.YAHOO()
 fn = interactions.FINNHUB()
