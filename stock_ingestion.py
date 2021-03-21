@@ -163,6 +163,7 @@ def get_smallcap():
 def populate_crypto():
     #Bitcoin
 
+
     time.sleep(60)
 
 #Run all daily tasks
