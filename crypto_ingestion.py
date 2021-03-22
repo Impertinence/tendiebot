@@ -22,7 +22,10 @@ btc_historical = crypto_db['btc_historical']
 eth_historical = crypto_db['eth_historical']
 
 #Ingest time difference
+# if len(btc_historical.find()) > 0
 
+
+# if(len(eth_historical.find())) > 0
 
 #Live Ingestion
 while True:
@@ -52,6 +55,8 @@ while True:
     new_btc_entries = public_client.get_product_historic_rates("BTC-USD", previous, now, 60)
 
     #Publish to mongo database
+    eth_historical.insert_many(new_eth_entriees)
+    btc_historical.insert_many(new_btc_entries)
 
     previous -= intervals
     now -= intervals
