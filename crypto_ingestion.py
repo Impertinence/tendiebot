@@ -17,11 +17,12 @@ mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
 #Relevant Databases and Collections
 crypto_db = mongo_client['crypto']
 
-btc_live = crypto_db['btc_live']
-eth_live = crypto_db['eth_live']
-
 btc_historical = crypto_db['btc_historical']
 eth_historical = crypto_db['eth_historical']
+
+#Live data structures
+btc_live = []
+eth_live = []
 
 #Live Ingestion
 while True:
@@ -36,10 +37,6 @@ while True:
     #Analyses object
     btc_analyses = analyses.Analyses(btc_live)
     eth_analyses = analyses.Analyses(eth_live)
-
-    #Stochs
-    btc_stoch = btc_analyses.stochastics("bid", "ask", "price", 14, 3)
-    eth_stoch = eth_analyses.stochastics("bid", "ask", "price", 14, 3)
 
     #Half-second pause before restarting loop
     time.sleep(0.5)
