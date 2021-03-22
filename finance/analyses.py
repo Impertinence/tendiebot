@@ -21,3 +21,5 @@ class Analyses():
         df['d_slow'] = df["k_slow"].rolling(window=d).mean()
 
         return df
+
+    def macd():
