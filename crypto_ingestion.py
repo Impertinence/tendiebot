@@ -18,11 +18,13 @@ now = datetime.datetime.now() + datetime.timedelta(hours=4)
 intervals = datetime.timedelta(minutes=300)
 previous = now - intervals
 
+#Historical entries (Minute granularity)
 btc_entries = []
 eth_entries = []
 
-btc_stochs = []
-eth_stochs = []
+#Live Entries (0.5 second granularity)
+btc_live = []
+eth_live = []
 
 #Initial Ingestion of last 35 hours of data
 
@@ -42,24 +44,23 @@ for x in range(0, 7):
     now -= intervals
     time.sleep(1)
 
-# #Live Ingestion
-# while True:
-#     new_eth_entry = public_client.get_product_ticker("ETH-USD")
-#     new_btc_entry = public_client.get_product_ticker("BTC-USD")
+#Live Ingestion
+while True:
+    new_eth_entry = public_client.get_product_ticker("ETH-USD")
+    new_btc_entry = public_client.get_product_ticker("BTC-USD")
 
-#     btc_entries.extend(new_btc_entry)
-#     eth_entries.extend(new_eth_entry)
+    btc_live.append(new_btc_entry)
+    eth_live.append(new_eth_entry)
 
-#     eth_analyses = analyses.Analyses(eth_entries)
+    btc_analyses = analyses.Analyses(btc_live)
+    eth_analyses = analyses.Analyses(eth_live)
+btc_analyses.stochastics("bid", "ask", "price", 14, 3)
 
+    time.sleep(0.5)
 
+#Historical ingestion
+while True:
+    new_eth_entries = public_client.get_product_ticker("ETH-USD")
+    new_btc_entries = public_client.get_product_ticker("BTC-USD")
 
-#     time.sleep(60)
-
-btc_analyses = analyses.Analyses(btc_entries)
-
-stochastics_df = btc_analyses.stochastics("low", "high", "close", 14, 3)
-
-plot = plotting.Plot(stochastics_df)
-
-plot.stochastics()
+    time.sleep(60)
