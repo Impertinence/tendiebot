@@ -21,6 +21,9 @@ eth_live = crypto_db['eth_live']
 btc_historical = crypto_db['btc_historical']
 eth_historical = crypto_db['eth_historical']
 
+#Ingest time difference
+
+
 #Live Ingestion
 while True:
     #Retrieve half-second entries
@@ -38,7 +41,7 @@ while True:
     #Half-second pause before restarting loop
     time.sleep(0.5)
 
-#Time for historical ingestion
+#Starting time for historical ingestion
 now = datetime.datetime.now() + datetime.timedelta(hours=4)
 intervals = datetime.timedelta(minutes=300)
 previous = now - intervals
@@ -49,7 +52,6 @@ while True:
     new_btc_entries = public_client.get_product_historic_rates("BTC-USD", previous, now, 60)
 
     #Publish to mongo database
-
 
     previous -= intervals
     now -= intervals
