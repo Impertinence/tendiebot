@@ -23,10 +23,6 @@ eth_live = crypto_db['eth_live']
 btc_historical = crypto_db['btc_historical']
 eth_historical = crypto_db['eth_historical']
 
-#Live Entries (0.5 second granularity)
-btc_live = []
-eth_live = []
-
 #Live Ingestion
 while True:
     #Retrieve half-second entries
