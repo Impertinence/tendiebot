@@ -2,7 +2,7 @@ import pandas as pd
 
 class Analyses():
     def __init__(self, dataset):
-        self.dataset = dataset
+        self.dataset = pd.DataFrame(dataset)
 
     #Stochastics
     def stochastics(self, low, high, close, k, d):
@@ -21,3 +21,7 @@ class Analyses():
         df['d_slow'] = df["k_slow"].rolling(window=d).mean()
 
         return df
+
+    #Moving Average Convergence Divergence
+    def macd():
+        
