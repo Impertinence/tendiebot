@@ -6,7 +6,7 @@ import pandas as pd
 import datetime
 import time
 import pymongo
-import _thread
+import threading
 
 from finance import analyses
 from misc import plotting
@@ -22,6 +22,8 @@ btc_live = crypto_db['btc_live']
 eth_live = crypto_db['eth_live']
 btc_historical = crypto_db['btc_historical']
 eth_historical = crypto_db['eth_historical']
+
+ingestion_ready = True
 
 #Ingest time difference
 def time_difference_ingestion(thread_name, test):
@@ -74,8 +76,7 @@ def historical_ingestion(thread_name, test):
     previous = now - intervals
 
     # #Historical ingestion
-    while True:
-        print("test")
+    while (ingestion_ready == True):
         new_eth_entries = public_client.get_product_historic_rates("ETH-USD", previous, now, 60)
         new_btc_entries = public_client.get_product_historic_rates("BTC-USD", previous, now, 60)
 
@@ -87,3 +88,11 @@ def historical_ingestion(thread_name, test):
         now -= intervals
 
         time.sleep(60)
+
+time_diff_ingestion = threading.Thread(target=time_difference_ingestion, args=("time_diff", 1))
+live_ingestion = threading.Thread(target=live_ingestion, args=("live", 1))
+historical_ingestion = threading.Thread(target=historical_ingestion, args=("historical", 1))
+
+time_diff_ingestion.start()
+live_ingestion.start()
+historical_ingestion.start()
