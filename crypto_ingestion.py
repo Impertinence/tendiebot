@@ -16,49 +16,67 @@ mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
 
 #Relevant Databases and Collections
 crypto_db = mongo_client['crypto']
+
 btc_live = crypto_db['btc_live']
 eth_live = crypto_db['eth_live']
 btc_historical = crypto_db['btc_historical']
 eth_historical = crypto_db['eth_historical']
 
 #Ingest time difference
-# if len(btc_historical.find()) > 0
+if(len(eth_historical.find()) > 0 and len(btc_historical.find()) > 0):
+    now = ((datetime.datetime.now() + datetime.timedelta(hours=4)) - datetime.datetime(1970, 1, 1)).total_seconds()
+    interval = (datetime.timedelta(minutes=300)).total_seconds()
+
+    #Get most recent entries and time
+    last_eth_entry = eth_historical.find_one()
+    last_btc_entry = btc_historical.find_one()
+    last_btc_time = last_btc_entry['time']
+    last_eth_time = last_eth_entry['time']
+
+    #Get num of loops
+    num_btc_loops = (now - last_btc_time) / interval
+    num_eth_loops = (now - last_eth_time) / interval
+
+    #BTC updates
+    for x in range(0, num_btc_loops):
+        
+
+    #ETH updates
+    for x in range(0, num_eth_loops):
 
 
-# if(len(eth_historical.find())) > 0
+# #Live Ingestion
+# while True:
+#     #Retrieve half-second entries
+#     new_eth_entry = public_client.get_product_ticker("ETH-USD")
+#     new_btc_entry = public_client.get_product_ticker("BTC-USD")
 
-#Live Ingestion
-while True:
-    #Retrieve half-second entries
-    new_eth_entry = public_client.get_product_ticker("ETH-USD")
-    new_btc_entry = public_client.get_product_ticker("BTC-USD")
+#     #Append half-second entries
+#     btc_live.append(new_btc_entry)
+#     eth_live.append(new_eth_entry)
 
-    #Append half-second entries
-    btc_live.append(new_btc_entry)
-    eth_live.append(new_eth_entry)
+#     #Analyses object
+#     btc_analyses = analyses.Analyses(btc_live)
+#     eth_analyses = analyses.Analyses(eth_live)
 
-    #Analyses object
-    btc_analyses = analyses.Analyses(btc_live)
-    eth_analyses = analyses.Analyses(eth_live)
+#     #Half-second pause before restarting loop
+#     time.sleep(0.5)
 
-    #Half-second pause before restarting loop
-    time.sleep(0.5)
+# #Starting time for historical ingestion
+# now = datetime.datetime.now() + datetime.timedelta(hours=4)
+# intervals = datetime.timedelta(minutes=300)
+# previous = now - intervals
 
-#Starting time for historical ingestion
-now = datetime.datetime.now() + datetime.timedelta(hours=4)
-intervals = datetime.timedelta(minutes=300)
-previous = now - intervals
+# #Historical ingestion
+# while True:
+#     new_eth_entries = public_client.get_product_historic_rates("ETH-USD", previous, now, 60)
+#     new_btc_entries = public_client.get_product_historic_rates("BTC-USD", previous, now, 60)
 
-#Historical ingestion
-while True:
-    new_eth_entries = public_client.get_product_historic_rates("ETH-USD", previous, now, 60)
-    new_btc_entries = public_client.get_product_historic_rates("BTC-USD", previous, now, 60)
+#     #Publish to mongo database
+#     eth_historical.insert_many(new_eth_entriees)
+#     btc_historical.insert_many(new_btc_entries)
 
-    #Publish to mongo database
-    eth_historical.insert_many(new_eth_entriees)
-    btc_historical.insert_many(new_btc_entries)
+#     previous -= intervals
+#     now -= intervals
 
-    previous -= intervals
-    now -= intervals
-
-    time.sleep(60)
+#     time.sleep(60)

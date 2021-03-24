@@ -23,5 +23,5 @@ class Analyses():
         return df
 
     #Moving Average Convergence Divergence
-    def macd():
-        
+    def macd(self, ):
+        df = pd.DataFrame(self.dataset)
