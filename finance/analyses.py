@@ -23,5 +23,9 @@ class Analyses():
         return df
 
     #Moving Average Convergence Divergence
-    def macd(self, ):
+    def macd(self):
+        df = pd.DataFrame(self.dataset)
+
+    #Relative Strength Index
+    def rsi(self):
         df = pd.DataFrame(self.dataset)
