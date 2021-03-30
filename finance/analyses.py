@@ -26,6 +26,8 @@ class Analyses():
     def macd(self):
         df = pd.DataFrame(self.dataset)
 
+	
+
     #Relative Strength Index
     def rsi(self):
         df = pd.DataFrame(self.dataset)
