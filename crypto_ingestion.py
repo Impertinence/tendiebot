@@ -111,14 +111,14 @@ def historical_ingestion(thread_name, start_time):
 	new_eth_entries = [{k: (Decimal128(v) if isinstance(v, decimal.Decimal) else v) for (k, v) in i.items()} for i in raw_eth_entries]
 	new_btc_entries = [{k: (Decimal128(v) if isinstance(v, decimal.Decimal) else v) for (k, v) in i.items()} for i in raw_btc_entries]
 
-        #Insert into mongo
-        eth_historical.insert_many(new_eth_entries)
-        btc_historical.insert_many(new_btc_entries)
+    #Insert into mongo
+    eth_historical.insert_many(new_eth_entries)
+    btc_historical.insert_many(new_btc_entries)
 
-        previous -= intervals
-        now -= intervals
+    previous -= intervals
+    now -= intervals
 
-        time.sleep(60)
+    time.sleep(60)
 
 #Start all threads
 if __name__ == "__main__":
