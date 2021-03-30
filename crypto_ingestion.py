@@ -95,10 +95,10 @@ def historical_ingestion(thread_name, start_time):
 
     #If ready for historical ingestion init time vals
     while(ingestion_ready == True):
-	now = datetime.datetime.now() + datetime.timedelta(hours=4)
-	intervals = datetime.timedelta(minutes=1)
-	previous = now - intervals
-	break
+	    now = datetime.datetime.now() + datetime.timedelta(hours=4)
+	    intervals = datetime.timedelta(minutes=1)
+	    previous = now - intervals
+	    break
 
     print("[HISTORICAL_INGESTION] Started at " + start_time)
 
