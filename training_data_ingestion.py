@@ -11,29 +11,29 @@ mongo_client = pymongo.MongoClient("mongodb://localhost:27017")
 cbp_client = cbp.PublicClient()
 
 crypto_db = mongo_client['crypto']
-eth_training_historical = crypto_db['eth_training_historical']
-btc_training_historical = crypto_db['btc_training_historical']
+training_historicals = crypto_db['training_historicals']
 
 now = datetime.datetime.now() + datetime.timedelta(hours=4)
 intervals = datetime.timedelta(minutes=300)
 previous = now - intervals
 
-eth_training_historical.delete_many({})
-btc_training_historical.delete_many({})
-
 #Get past 25 days of 1 minute ticks
 for x in range(0, 120):
-	raw_eth_entries = cbp_client.get_product_historic_rates("ETH-USD", previous, now, 60)
-	raw_btc_entries = cbp_client.get_product_historic_rates("BTC-USD", previous, now, 60)
+	raw_entries = []
 
-	eth_entries = [{k: (Decimal128(v) if isinstance(v, decimal.Decimal) else v) for (k, v) in i.items()} for i in raw_eth_entries]
-	btc_entries = [{k: (Decimal128(v) if isinstance(v, decimal.Decimal) else v) for (k, v) in i.items()} for i in raw_btc_entries]
+	eth_rates = [{**i, "asset": "ETH-USD"} for i in cbp_client.get_product_historic_rates("ETH-USD", previous, now, 60)]
+	btc_rates = [{**i, "asset": "BTC-USD"} for i in cbp_client.get_product_historic_rates("BTC-USD", previous, now, 60)]
 
-	eth_training_historical.insert_many(eth_entries)
-	btc_training_historical.insert_many(btc_entries)
+	
+	raw_entries.extend(eth_rates)
+	raw_entries.extend(btc_rates)
 
-	print("[ETH_INGESTION_EPOCH]: " + str(x) + "Completed!")
-	print("[BTC_INGESTION_EPOCH]: " + str(x) + "Completed!")
+	d_comp1 = [{k: (Decimal128(v) if isinstance(v, decimal.Decimal) else v) for (k, v) in i.items()} for i in raw_entries]
+	entries = [{k: ((v - datetime.timedelta(hours=4)) if isinstance(v, datetime.datetime) else v) for (k, v) in i.items()} for i in d_comp1]
+
+	training_historicals.insert_many(entries)
+
+	print("[INGESTION_EPOCH]: " + str(x+1) + " Completed!")
 
 	now -= intervals
 	previous -= intervals

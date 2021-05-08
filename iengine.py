@@ -1,3 +1,0 @@
-import ingestion
-
-ingestion.start()
